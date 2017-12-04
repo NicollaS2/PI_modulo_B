@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="433.0" prefWidth="939.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pi.controllers.BoletoController">
+   <top>
+      <HBox prefHeight="40.0" prefWidth="600.0" spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <TextField fx:id="codigo">
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </HBox.margin>
+            </TextField>
+            <Button mnemonicParsing="false" onAction="#procurar" styleClass="info" text="Procurar">
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </HBox.margin></Button>
+         </children>
+      </HBox>
+   </top>
+   <center>
+      <VBox alignment="TOP_CENTER" prefHeight="360.0" prefWidth="457.0" BorderPane.alignment="CENTER">
+         <children>
+            <TableView fx:id="tabela" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="85.0" prefWidth="939.0">
+              <columns>
+                <TableColumn fx:id="colunaNome" prefWidth="75.0" text="Nome" />
+                <TableColumn fx:id="colunaData" prefWidth="120.0" text="Data de contratação" />
+                  <TableColumn fx:id="colunaValor" prefWidth="64.0" text="Valor" />
+                  <TableColumn fx:id="colunaParcelas" prefWidth="58.0" text="Parcelas" />
+                  <TableColumn fx:id="colPagos" prefWidth="67.0" text="Liquidados" />
+                  <TableColumn fx:id="colunaDescricao" prefWidth="87.0" text="Descrição" />
+                  <TableColumn fx:id="numeros" prefWidth="212.0" text="Numeros">
+                     <columns>
+                        <TableColumn fx:id="colFone" prefWidth="100.0" text="Fone" />
+                        <TableColumn fx:id="colCelular" prefWidth="100.0" text="Celular" />
+                     </columns>
+                  </TableColumn>
+                  <TableColumn fx:id="email" minWidth="0.0" prefWidth="190.0" text="Email" />
+                  <TableColumn fx:id="colStatus" prefWidth="77.0" styleClass="suamae" text="Status" />
+              </columns>
+            </TableView>
+            <HBox alignment="TOP_CENTER" prefHeight="298.0" prefWidth="898.0">
+               <children>
+                  <VBox alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="297.0" prefWidth="315.0">
+                     <children>
+                        <Label alignment="CENTER" text="Datas para Cobrança:" />
+                        <ListView fx:id="listaDatas" maxWidth="-Infinity" prefHeight="183.0" prefWidth="290.0" />
+                     </children>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </VBox>
+                  <VBox prefHeight="228.0" prefWidth="150.0">
+                     <HBox.margin>
+                        <Insets top="50.0" />
+                     </HBox.margin>
+                     <children>
+                        <Label text="Parcelas Liquidadas:" />
+                        <ChoiceBox fx:id="listadeParcelas" prefWidth="150.0" />
+                        <CheckBox fx:id="checkpagou" mnemonicParsing="false" onMouseClicked="#naoPagou" text="Não pagou?" />
+                     </children>
+                  </VBox>
+                  <Button fx:id="guardarBtn" mnemonicParsing="false" onAction="#GuardarPagos" text="Guardar">
+                     <HBox.margin>
+                        <Insets top="65.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

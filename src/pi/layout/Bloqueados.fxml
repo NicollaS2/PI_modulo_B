@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@estilo.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pi.controllers.BloqueadosController">
+   <right>
+      <TableView fx:id="tabela" prefHeight="400.0" prefWidth="607.0" BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn fx:id="contrato" prefWidth="73.0" text="Contrato" />
+            <TableColumn fx:id="dominio" prefWidth="209.0" text="Dominio" />
+            <TableColumn fx:id="parcelas" prefWidth="118.0" text="Número de parcelas" />
+            <TableColumn fx:id="pagos" prefWidth="88.0" text="Parcelas pagas" />
+          <TableColumn fx:id="situacao" minWidth="0.0" prefWidth="110.0" styleClass="suamae" text="Situação" />
+        </columns>
+      </TableView>
+   </right>
+</BorderPane>
