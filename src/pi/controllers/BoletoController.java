@@ -71,6 +71,8 @@ public class BoletoController implements Initializable {
 
 	int parcelas, parcelas_pagas;
 
+	public static String valor;
+
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		try {
@@ -86,6 +88,13 @@ public class BoletoController implements Initializable {
 			alerta.setHeaderText("Erro ao executar o initialize, Boleto");
 			alerta.showAndWait();
 		}
+
+		System.out.println("o valor passado é "+valor);
+		codigo.setText(valor);
+	}
+
+	public void setValor(String valor) {
+		this.valor = valor;
 	}
 
 	@FXML
@@ -138,15 +147,15 @@ public class BoletoController implements Initializable {
 			switch (tipopagto) {
 				case "Mensal":
 					// seta 31 dias
-					cobranca = 30;
+					cobranca = 1;
 					break;
 				case "Trimestral":
 					// seta 90 dias
-					cobranca = 92;
+					cobranca = 3;
 					break;
 				default:
 					// seta 366 dias
-					cobranca = 366;
+					cobranca = 12;
 					break;
 			}
 
@@ -175,7 +184,7 @@ public class BoletoController implements Initializable {
 
 			//looping para gerar datas futuras no listview
 			for (int i = 1; i < parcelas + 1; i++) {
-				calendario.add(Calendar.DATE, cobranca); // Adiciona dia (cobranca) ao calendário
+				calendario.add(Calendar.MONTH, cobranca); // Adiciona dia (cobranca) ao calendário
 				dataFormatada = conversor.format(calendario.getTime()); // dt converter a data em string novamente.
 				if (qtdpagos < parcelas) {
 					listaDatas.getItems().add("Parcela: " + i + "° - " + dataFormatada + "- Pago");

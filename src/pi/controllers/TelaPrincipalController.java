@@ -7,6 +7,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -73,6 +75,8 @@ public class TelaPrincipalController implements Initializable {
 	private TableColumn<CadastrarCliente, String> colCnpj;
 	@FXML
 	private TextField pegaDia;
+
+	String val;
 
 	boolean busca;
 	int dia;
@@ -149,9 +153,21 @@ public class TelaPrincipalController implements Initializable {
 		}
 
 		// Pegar valor das linhas e colunas da tabela com a inserção de um textfiel ao clicar
-		colContrato.setOnEditCancel((TableColumn.CellEditEvent<CadastrarCliente, String> evento) -> {
-			((CadastrarCliente) evento.getTableView().getItems().get(
-					evento.getTablePosition().getRow())).setNome(evento.getOldValue());
+		colContrato.setOnEditStart((TableColumn.CellEditEvent<CadastrarCliente, String> eventos) -> {
+			((CadastrarCliente) eventos.getTableView().getItems().get(
+					eventos.getTablePosition().getRow())).setNome(eventos.getOldValue());
+
+
+			val = eventos.getRowValue().getCodcontrato();
+
+			System.out.println(val);
+
+			try {
+				Consultar(val);
+			} catch (IOException ex) {
+				Logger.getLogger(TelaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
+			}
+
 		});
 		colContrato.setCellFactory(TextFieldTableCell.forTableColumn());
 
@@ -241,16 +257,24 @@ public class TelaPrincipalController implements Initializable {
 		System.exit(0);
 	}
 
-	@FXML
-	private void Consultar(ActionEvent event) throws IOException {
+	private void Consultar(String valor) throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/pi/layout/Boleto.fxml"));
-		Parent telaNova = (Parent) fxmlLoader.load();
+		fxmlLoader.setController(new BoletoController());
 		Stage stage = new Stage();
+
+		BoletoController lv = fxmlLoader.getController();
+		System.out.println("na consultar é: "+valor);
+		lv.setValor(valor);
+
+		Parent telaNova = (Parent) fxmlLoader.load();
+
+
 		stage.setScene(new Scene(telaNova));
 		Screen screen = Screen.getPrimary();
 		telaNova.getStylesheets().add("pi/layout/estilo.css");
 		stage.setTitle("Consulta de boletos");
 		stage.getIcons().add(new Image("pi/img/atualcommerce_novo.png"));
+
 		stage.showAndWait();
 	}
 
@@ -315,5 +339,15 @@ public class TelaPrincipalController implements Initializable {
 		stage.getIcons().add(new Image("pi/img/atualcommerce_novo.png"));
 		stage.showAndWait();
 		listartabela();
+	}
+
+	private String toString(String codcontrato) {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@FXML
+	private void Botao_boleto(ActionEvent event) throws IOException {
+		String boll = "Digite seu código";
+		Consultar(boll);
 	}
 }

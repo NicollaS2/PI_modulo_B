@@ -48,7 +48,7 @@
                   <VBox prefHeight="639.0" prefWidth="198.0">
                      <children>
                         <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#cadastro" styleClass="primary" text="Cadastrar" />
-                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#Consultar" styleClass="primary" text="Consultar Boleto">
+                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#Botao_boleto" styleClass="primary" text="Consultar Boleto">
                            <VBox.margin>
                               <Insets top="10.0" />
                            </VBox.margin>
