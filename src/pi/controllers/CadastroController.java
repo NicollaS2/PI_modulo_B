@@ -1,8 +1,13 @@
 package pi.controllers;
 
 import java.net.URL;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -20,6 +25,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import pi.MaskFieldUtil;
+import pi.dao.BoletoDAO;
 import pi.dao.CadastrarClienteDAO;
 import pi.javabean.CadastrarCliente;
 
@@ -184,15 +190,16 @@ public class CadastroController implements Initializable {
                 Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
                 alerta.setContentText("Confirmar cadastro?");
                 Optional <ButtonType> result = alerta.showAndWait();
-                
+
                 if(result.get() == ButtonType.OK){
                     CadastrarClienteDAO.cadastrar(cliente);
+					gerar_parcelas();
                     limpar();
                 }
                 else{
-                    
+
                 }
-                               
+
                 SingleSelectionModel<Tab> selectionModel = janelas.getSelectionModel();
                 selectionModel.select(aba1);
             }
@@ -252,4 +259,53 @@ public class CadastroController implements Initializable {
         // campoData.clear();
         campoParcelas.clear();
     }
+
+	public void gerar_parcelas() throws ParseException{
+		CadastrarCliente parcelas_boleto = new CadastrarCliente();
+		parcelas_boleto.setCodcontrato(campoCod.getText());
+		int parcelas = Integer.parseInt(campoParcelas.getText());
+		String tipopagto = campoPagto.getValue();
+		LocalDate meuds = campoData.getValue();
+		Date data = Date.valueOf(meuds);
+
+		System.out.println("variavel Date data = "+data);
+
+		int cobranca = 0;
+			// de acordo com o tipo de pagamento as datas no looping são acrescentadas de formas diferentes
+			switch (tipopagto) {
+				case "Mensal":
+					// seta 31 dias
+					cobranca = 1;
+					break;
+				case "Trimestral":
+					// seta 90 dias
+					cobranca = 3;
+					break;
+				default:
+					// seta 366 dias
+					cobranca = 12;
+					break;
+			}
+
+			//convertendo datas
+			DateFormat newf = new SimpleDateFormat("yyyy-MM-dd");
+			String dataFormatada = newf.format(data);
+
+			System.out.println("dataFormatada = "+dataFormatada);
+
+			SimpleDateFormat conversor = new SimpleDateFormat("yyyy-MM-dd");
+			Calendar calendario = Calendar.getInstance();
+			calendario.setTime(conversor.parse(dataFormatada));
+
+			//looping para gerar datas futuras no listview
+			for (int i = 1; i < parcelas + 1; i++) {
+				calendario.add(Calendar.MONTH, cobranca); // Adiciona dia (cobranca) ao calendário
+				dataFormatada = conversor.format(calendario.getTime()); // dt converter a data em string novamente.
+				System.out.println("dataFormatada loop = "+dataFormatada);
+				parcelas_boleto.setDatacontratacao(dataFormatada);
+				parcelas_boleto.setParcelas(0);
+				BoletoDAO.parcelas_banco(parcelas_boleto);
+
+			}
+	}
 }

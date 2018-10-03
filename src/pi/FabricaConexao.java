@@ -11,7 +11,7 @@ public class FabricaConexao {
 
     public static Connection getConnection(){
         try {
-                return DriverManager.getConnection("jdbc:mysql://localhost/bancopi", "root",""); // credenciais para acesso ao BD.
+                return DriverManager.getConnection("jdbc:mysql://localhost/boletos_dev", "root",""); // credenciais para acesso ao BD.
         } catch (SQLException e) { // se não conseguir acesso exibe tela de erro.
             Alert alerta = new Alert(Alert.AlertType.ERROR);
             alerta.setHeaderText("Erro ao conectar ao BD, credenciais incorretas em: FabricaConexao.java\nou o mysql não está ativado!");

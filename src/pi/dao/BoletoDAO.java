@@ -104,7 +104,7 @@ public class BoletoDAO {
         }
 
     }
-        
+
         public static void atualizarStatus(CadastrarCliente pagos) {
 
         try {
@@ -115,6 +115,27 @@ public class BoletoDAO {
             PreparedStatement stmt = conexao.prepareStatement(sql);
             stmt.setString(1, pagos.getEstado());
             stmt.setString(2, pagos.getCodcontrato());
+            stmt.execute();
+
+            stmt.close();
+            conexao.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+	public static void parcelas_banco(CadastrarCliente parcelas_boleto) {
+
+        try {
+            Connection conexao = FabricaConexao.getConnection();
+
+            String sql = "insert into parcelas(id_plano,data_parcela,status_parcela) values (?,?,?) ";
+            PreparedStatement stmt = conexao.prepareStatement(sql);
+            stmt.setString(1, parcelas_boleto.getCodcontrato());
+            stmt.setString(2, parcelas_boleto.getDatacontratacao());
+            stmt.setInt(3, parcelas_boleto.getParcelas());
             stmt.execute();
 
             stmt.close();

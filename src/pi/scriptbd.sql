@@ -1,6 +1,6 @@
-create schema bancopi;
+create schema boletos_dev;
 
-use bancopi;
+use boletos_dev;
 
 create table cliente(
 	id_cliente int not null auto_increment,
@@ -5737,6 +5737,20 @@ inner join estado as e on c.id_estado = e.id_estado
 where e.sigla = 'PR';
 
 select * from admin;
+
+
+create table parcelas(
+	id int auto_increment,
+    id_plano varchar(15),
+    data_parcela date,
+    status_parcela bit,
+    primary key (id)
+);
+
+alter table parcelas
+add constraint fk_id_plano
+foreign key(id_plano)
+references plano(codcontrato);
 
 -- ACABA AQUI  ||  || ACABA AQUI  ||  || ACABA AQUI  ||  || ACABA AQUI  ||  || ACABA AQUI  ||  || ACABA AQUI  ||  || ACABA AQUI  ||  || 
 -- -------------------------------------------------------------------------------------------------------------------------------------------
