@@ -1,5 +1,9 @@
 package pi.controllers;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.Date;
 import java.text.DateFormat;
@@ -10,6 +14,7 @@ import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -25,6 +30,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import pi.dao.BoletoDAO;
 import pi.javabean.CadastrarCliente;
+import javafx.scene.control.cell.TextFieldTableCell;
 
 public class BoletoController implements Initializable {
 
@@ -51,28 +57,33 @@ public class BoletoController implements Initializable {
 	@FXML
 	private TableColumn<CadastrarCliente, CadastrarCliente> colCelular;
 	@FXML
-	private TableColumn<CadastrarCliente, CadastrarCliente> email;
+	private TableColumn<CadastrarCliente, String> email;
 	@FXML
 	private TableColumn<CadastrarCliente, CadastrarCliente> colPagos;
 	@FXML
 	private TableColumn<CadastrarCliente, CadastrarCliente> colStatus;
 	@FXML
 	private ChoiceBox<Integer> listadeParcelas;
-
-	ObservableList<String> dadosClientes;
-	ObservableList<CadastrarCliente> dadosData;
-	ObservableList<Integer> inttoInteger;
+        @FXML
+        private TableColumn<CadastrarCliente, String> dominio;
 	@FXML
 	private BorderPane root;
 	@FXML
 	private CheckBox checkpagou;
 	@FXML
 	private Button guardarBtn;
+        
+        
+        ObservableList<String> dadosClientes;
+	ObservableList<CadastrarCliente> dadosData;
+	ObservableList<Integer> inttoInteger;
 
 	int parcelas, parcelas_pagas;
 
 	public static String valor;
-
+        
+        String site;
+ 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		try {
@@ -110,6 +121,10 @@ public class BoletoController implements Initializable {
 		String info = codigo.getText();
 		CadastrarCliente c = new CadastrarCliente();
 		c.setCodcontrato(info);
+                
+                
+                
+		//email.setCellFactory(TextFieldTableCell.forTableColumn());
 
 		try {
 			lista = BoletoDAO.listardata(c);
@@ -122,13 +137,18 @@ public class BoletoController implements Initializable {
 			colFone.setCellValueFactory(new PropertyValueFactory<>("fone"));
 			colCelular.setCellValueFactory(new PropertyValueFactory<>("celular"));
 			email.setCellValueFactory(new PropertyValueFactory<>("email"));
+                        dominio.setCellValueFactory(new PropertyValueFactory<>("dominio"));
 			colPagos.setCellValueFactory(new PropertyValueFactory<>("parcelas_pagas"));
 			colStatus.setCellValueFactory(new PropertyValueFactory<>("estado"));
 			tabela.setItems(dadosData);
-
+                  
+                        
 			//pega a data
 			tabela.getSelectionModel().select(0, colunaData);
 			Date data = tabela.getSelectionModel().getSelectedItem().getData();
+                        //pega site
+                        tabela.getSelectionModel().select(0, dominio);
+			site = tabela.getSelectionModel().getSelectedItem().getDominio();
 			//pega o status
 			tabela.getSelectionModel().select(0, colStatus);
 			String sta = tabela.getSelectionModel().getSelectedItem().getEstado();
@@ -235,7 +255,9 @@ public class BoletoController implements Initializable {
 			alerta.setContentText("Erro ao consultar contrato, verifique se foi digitado corretamente! \n" + e);
 			alerta.showAndWait();
 		}
-
+                
+                
+            
 	}
 
 	public void listar() {
@@ -257,6 +279,8 @@ public class BoletoController implements Initializable {
 		colPagos.setCellValueFactory(new PropertyValueFactory<>("parcelas_pagas"));
 		colStatus.setCellValueFactory(new PropertyValueFactory<>("estado"));
 		tabela.setItems(dadosData);
+                
+               
 	}
 
 	@FXML
@@ -316,4 +340,12 @@ public class BoletoController implements Initializable {
 
 	}
 
+    @FXML
+    private void Irsite(ActionEvent event) throws URISyntaxException, IOException {
+        if(site!=null){
+            Desktop d = Desktop.getDesktop();
+            d.browse(new URI("http://"+site));
+        }
+    }
+    
 }

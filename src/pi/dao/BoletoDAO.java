@@ -43,7 +43,7 @@ public class BoletoDAO {
 		try {
 			Connection conexao = FabricaConexao.getConnection(); // Abrindo a conexão
 
-			String sql = "select cliente.nome ,plano.datacontrato, plano.valor, plano.parcelas, plano.parcelas_pagas, plano.status_plano, pagamento.descricao,"
+			String sql = "select cliente.nome ,plano.datacontrato, plano.dominio, plano.valor, plano.parcelas, plano.parcelas_pagas, plano.status_plano, pagamento.descricao,"
 					+ " contato.email, contato.fixo, contato.celular1 from plano inner join cliente on cliente.id_cliente = plano.id_cliente"
 					+ " inner join pagamento on pagamento.id_pagamento = plano.id_pagamento "
 					+ " inner join contato on contato.id_contato = cliente.id_contato"
@@ -61,6 +61,7 @@ public class BoletoDAO {
 			while (rs.next()) {
 				CadastrarCliente a = new CadastrarCliente();
 				a.setData((rs.getDate("datacontrato")));
+                                a.setDominio((rs.getString("dominio")));
 				a.setNome((rs.getString("nome")));
 				a.setValor(rs.getDouble("valor"));
 				a.setParcelas(rs.getInt("parcelas"));
